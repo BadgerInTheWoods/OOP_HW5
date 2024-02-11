@@ -2,10 +2,13 @@ package notebook.controller;
 
 import notebook.model.User;
 import notebook.model.repository.GBRepository;
+import notebook.model.repository.impl.UserRepository;
+import notebook.util.UserValidator;
 
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Scanner;
 
 public class UserController {
     private final GBRepository repository;
@@ -38,7 +41,27 @@ public class UserController {
         repository.update(Long.parseLong(userId), update);
     }
 
+    public void saveAllUsers(){
+        repository.saveAll(UserRepository.readAll());
+    }
+
     public void deleteUser(String userId){
         repository.delete(Long.parseLong(userId));
+    }
+
+    public String prompt(String message) {
+        Scanner in = new Scanner(System.in);
+        System.out.print(message);
+        return in.nextLine();
+    }
+
+    public User createUser() {
+        String firstName = prompt("Имя: ");
+        String lastName = prompt("Фамилия: ");
+        String phone = prompt("Номер телефона: ");
+
+        UserValidator validator = new UserValidator();
+
+        return validator.validate(new User(firstName, lastName, phone));
     }
 }

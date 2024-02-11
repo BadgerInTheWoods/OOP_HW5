@@ -107,8 +107,8 @@ public class UserRepository implements GBRepository {
         }
     }
 
-    @Override
-    public List<String> readAll() {
+
+    public static List<String> readAll() {
         List<String> lines = new ArrayList<>();
         try {
             File file = new File(DBConnector.DB_PATH);

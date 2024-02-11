@@ -19,7 +19,7 @@ public class UserView {
         showCommands();
         while (true) {
             while (true) {
-                String command = prompt("Введите команду: ");
+                String command = userController.prompt("Введите команду: ");
                 try {
                     com = Commands.valueOf(command);
                     break;
@@ -31,7 +31,7 @@ public class UserView {
             if (com == Commands.EXIT) return;
             switch (com) {
                 case CREATE:
-                    User u = createUser();
+                    User u = userController.createUser();
                     userController.saveUser(u);
                     break;
                 case READ:
@@ -47,10 +47,13 @@ public class UserView {
                     System.out.println(userController.readAll());
                     break;
                 case UPDATE:
-                    userController.updateUser(typeUserId(), createUser());
+                    userController.updateUser(typeUserId(), userController.createUser());
                     break;
                 case DELETE:
                     userController.deleteUser(typeUserId());
+                    break;
+                case SAVEALL:
+                    userController.saveAllUsers();
                     break;
 
             }
@@ -58,7 +61,7 @@ public class UserView {
     }
 
     public String typeUserId() {
-        String userId = prompt("Enter user id: ");
+        String userId = userController.prompt("Enter user id: ");
         return userId;
     }
 
@@ -70,19 +73,5 @@ public class UserView {
         System.out.println();
     }
 
-    private String prompt(String message) {
-        Scanner in = new Scanner(System.in);
-        System.out.print(message);
-        return in.nextLine();
-    }
 
-    private User createUser() {
-        String firstName = prompt("Имя: ");
-        String lastName = prompt("Фамилия: ");
-        String phone = prompt("Номер телефона: ");
-
-        UserValidator validator = new UserValidator();
-
-        return validator.validate(new User(firstName, lastName, phone));
-    }
 }
